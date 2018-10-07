@@ -1,4 +1,4 @@
-# MSDS-6306-Doing-Data-Science---Case-Study-01
+Beer Study Codebook
 
 Lei J
 
