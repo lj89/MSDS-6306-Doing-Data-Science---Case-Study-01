@@ -5,6 +5,10 @@ date: "October 1, 2018"
 output: html_document
 ---
 
+##Notes to partner
+##Please add comments and better code as you see fit
+
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
