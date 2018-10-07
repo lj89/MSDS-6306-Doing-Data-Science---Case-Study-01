@@ -45,9 +45,10 @@ tail(allBeerDataDF,6)
 
 ```{r}
 # report NA count, put in data frame for easier display options
-naCountDF <-as.data.frame(sapply(allBeerDataDF, function(x) sum(length(which(is.na(x))))))
-names(naCountDF) <- ("NA Count") # rename columns
-naCountDF
+#naCountDF <-as.data.frame(sapply(allBeerDataDF, function(x) sum(length(which(is.na(x))))))
+#names(naCountDF) <- ("NA Count") # rename columns
+#naCountDF
+colSums(is.na(allBeerDataDF ))
 ```
 
 ```{r}
