@@ -20,7 +20,7 @@ library(ggplot2)
 
 ```{r}
 # Read beer data from csv file and put into beerDF data frame.Then rename columns to be more readable.
-beerDF <- read.csv(".\\ImportFiles\\Beers.csv",header=TRUE,sep=",",stringsAsFactors = FALSE, encoding = "UTF-8")
+beerDF <- read.csv(".\\ImportFiles\\Beers.csv",header=TRUE,sep=",",stringsAsFactors = TRUE, encoding = "UTF-8")
 names(beerDF) <- c("BeerName","BeerID","AlcoholByVolume","BitternessUnits","BreweryID",
                    "BeerStyle","Ounces") # rename table columns
 
@@ -30,13 +30,13 @@ names(breweryDF) <- c("BreweryID","BreweryName","City","State") # rename table c
 ```
 
 ```{r}
-# Obtain number of breweries in each state using group_by function in library dplyr,
+#Q1 Obtain number of breweries in each state using group_by function in library dplyr,
 #  then show data with the summarize function
 breweryStateCnt <- group_by(breweryDF,State)
 summarize(breweryStateCnt,count=n())
 ```
 ```{r}
-# merge brewery and beer data into brewDataDF data frame
+#Q2 The code merged brewery and beer data into the brewDataDF data frame
 allBeerDataDF <- merge.data.frame(breweryDF,beerDF,by="BreweryID")
 #write.table(allBeerDataDF,".\\OutputFiles\\MergedBeerData1.csv",quote=FALSE,sep=',',row.names=FALSE)
 head(allBeerDataDF,6)
@@ -44,34 +44,74 @@ tail(allBeerDataDF,6)
 ```
 
 ```{r}
-# report NA count, put in data frame for easier display options
-#naCountDF <-as.data.frame(sapply(allBeerDataDF, function(x) sum(length(which(is.na(x))))))
-#names(naCountDF) <- ("NA Count") # rename columns
-#naCountDF
-colSums(is.na(allBeerDataDF ))
+#Q3 Reporting NA count, put in data frame for easier display options
+naCountDF <-as.data.frame(sapply(allBeerDataDF, function(x) sum(length(which(is.na(x))))))
+names(naCountDF) <- ("NA Count") # rename columns
+naCountDF
 ```
 
 ```{r}
-# Add median column for Alcohol Content and Bitterness Units
-allBeerDataDF$medianAlcoholContent <- sapply(allBeerDataDF$AlcoholByVolume,median)
-allBeerDataDF$medianBitternesUnits <- sapply(allBeerDataDF$BitternessUnits,median)
+#Q4 Creating DF for median Alcohol by Volume (ABV) and International Bitterness Units (IBU)
+#   NA's are ignored in calculations, and associated state is inlcuded in the data frame
+medianABV <- aggregate(allBeerDataDF$AlcoholByVolume, list(allBeerDataDF$State), median, na.rm=TRUE)
+names(medianABV) <- c("State","MedianAlcoholByVolume") # Add Column Names
+medianIBU <- aggregate(allBeerDataDF$BitternessUnits, list(allBeerDataDF$State), median, na.rm=TRUE)
+names(medianIBU) <- c("State","MedianBitternessUnits") # Add Column Names
+
+medianBeerData <- merge(medianABV,medianIBU,"State")   # Merge median ABV & IBU into one DF 
+
+# Plot ABV by State, flip axes for easier reading, sort by ABV
+ggplot(medianBeerData) + 
+  aes(x=reorder(State,-MedianAlcoholByVolume),y=MedianAlcoholByVolume,fill=MedianBitternessUnits,na.omit=TRUE) +   
+  geom_bar(stat="identity") + coord_flip() +                                             # make hoizontal plot
+  theme(axis.text.y=element_text(size=6)) +                                              # decrease axis font
+  labs(title = "ABV by State",x="State",y="Median Alcohol by Volume (ABV)") +            # add axes titles
+  theme(plot.title = element_text(color="dark blue",hjust=0.5)) +                        # format main title
+  theme(axis.title.x = element_text(color="dark blue")) +                                # format x title
+  theme(axis.title.y = element_text(color="dark blue")) +                                # format y title
+  guides(fill=guide_legend("Bitterness Units")) +                                        # label legend
+  scale_fill_gradientn(colours = rainbow(3))
+
+# Plot IBU by State, flip axes for easier reading, sort by IBU
+ggplot(medianBeerData) + 
+  aes(x=reorder(State,-MedianBitternessUnits),y=MedianBitternessUnits,fill=MedianAlcoholByVolume,na.omit=TRUE) +   
+  geom_bar(stat="identity") + coord_flip() +                                             # make hoizontal plot
+  theme(axis.text.y=element_text(size=6)) +                                              # decrease axis font
+  labs(title = "IBU by State",x="State",y="Median International Bitternesss Units (IBU)") + # add axes titles
+  theme(plot.title = element_text(color="dark blue",hjust=0.5)) +                        # format main title
+  theme(axis.title.x = element_text(color="dark blue")) +                                # format x title
+  theme(axis.title.y = element_text(color="dark blue")) +                                # format y title
+  guides(fill=guide_legend("Alcohol By Volume")) +                                       # label legend
+  scale_fill_gradientn(colours = rainbow(4))
 ```
 
 ```{r}
-# Create plot data for the median alcohol content and international bitterness unit for each state,
-#   then plot
-medianAlcholBitternessPlotData <- data.frame("State" = allBeerDataDF$State,
-                       "MedianAlcoholContent" = allBeerDataDF$medianAlcoholContent,
-                       "MedianBitternessUnits" = allBeerDataDF$BitternessUnits,
-                       stringsAsFactors = FALSE)
-ggplot(medianAlcholBitternessPlotData) +    
-    aes(x=MedianAlcoholContent,y=MedianBitternessUnits,fill=medianAlcholBitternessPlotData$State) +   
-    geom_bar(stat="identity") 
+#Q5 Identifying state with max ABV (alcohol) & IBU (bitterness)
+allBeerDataDF[which.max(allBeerDataDF$AlcoholByVolume),]
+
+#The state with the maximum alcoholic beer is Colorado. It has a 0.128 ABV and comes from the Upslope Brewing Company. The beer is the Lee Hill Series Vol. 5, a Belgian Style Quadrupel Ale.
+
+allBeerDataDF[which.max(allBeerDataDF$BitternessUnits),]
+#The state with the maximum bitterness is Oregon. It has a 0.082 IBU and comes from the Astoria Brewing Company. The beer is the Bitter Bitch Imperial IPA.
 ```
-
 ```{r}
-maxDataByState <- group_by(allBeerDataDF,State) %>% summarize(AlcoholByVolume=max(AlcoholByVolume,na.rm=TRUE))
-maxDataByState$BitternessUnits<- group_by(allBeerDataDF,State) %>% summarize(BitternessUnits=max(BitternessUnits,na.rm=TRUE))
+#Q6 Below are he summary statistics for the Achohol By Volume (ABV)
+summary(allBeerDataDF$AlcoholByVolume)
+```
+```{r}
+#Q7 Is there an apparent relationship between the bitterness fo the beer and its alcoholic content
 
+#  this needs some work, not sure all the data is being plotted
+
+ggplot(medianBeerData) + 
+  aes(x=MedianAlcoholByVolume,y=MedianBitternessUnits,na.omit=TRUE) +   
+  geom_point(stat="identity")                
+  theme(axis.text.y=element_text(size=6)) +                                              # decrease axis font
+  labs(title = "ABV vs IBU",x="Medain Alcohol By Volume (ABV)",y="Median International Bitternesss Units (IBU)") + # add axes titles
+  theme(plot.title = element_text(color="dark blue",hjust=0.5)) +                        # format main title
+  theme(axis.title.x = element_text(color="dark blue")) +                                # format x title
+  theme(axis.title.y = element_text(color="dark blue"))                                  # format y title
+#  guides(fill=guide_legend("Alcohol By Volume"))                                        # label legend
+#  scale_fill_gradientn(colours = rainbow(4))
 ```
 
