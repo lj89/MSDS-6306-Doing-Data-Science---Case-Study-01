@@ -1,0 +1,88 @@
+title: "MSDS6306 Sect404 Case Study 1-Beer Study"
+author: "Steve Bramhall, Lei Jiang"
+date: "October 1, 2018"
+output: html_document
+---
+
+##Notes to partner
+##Please add comments and better code as you see fit
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r message=FALSE, warning=FALSE}
+# Load Libraries
+library(plyr)
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+# Read beer data from csv file and put into beerDF data frame.Then rename columns to be more readable.
+beerDF <- read.csv(".\\ImportFiles\\Beers.csv",header=TRUE,sep=",",stringsAsFactors = FALSE, encoding = "UTF-8")
+names(beerDF) <- c("BeerName","BeerID","AlcoholByVolume","BitternessUnits","BreweryID",
+                   "BeerStyle","Ounces") # rename table columns
+
+# Read brewery data from csv file and put into breweryDF data frame.Then rename columns to be more readable.
+breweryDF <- read.csv(".\\ImportFiles\\Breweries.csv",header=TRUE,sep=",",stringsAsFactors = FALSE)
+names(breweryDF) <- c("BreweryID","BreweryName","City","State") # rename table columns
+```
+
+```{r}
+# Obtain number of breweries in each state using group_by function in library dplyr,
+#  then show data with the summarize function
+#breweryStateCnt <- group_by(breweryDF,State)
+#summarize(breweryStateCnt,count=n())
+library(plyr)
+count(breweryDF,"State")
+```
+```{r}
+# merge brewery and beer data into brewDataDF data frame
+allBeerDataDF <- merge.data.frame(breweryDF,beerDF,by="BreweryID")
+#write.table(allBeerDataDF,".\\OutputFiles\\MergedBeerData1.csv",quote=FALSE,sep=',',row.names=FALSE)
+head(allBeerDataDF,6)
+tail(allBeerDataDF,6)
+```
+
+```{r}
+# report NA count, put in data frame for easier display options
+#naCountDF <-as.data.frame(sapply(allBeerDataDF, function(x) sum(length(which(is.na(x))))))
+#names(naCountDF) <- ("NA Count") # rename columns
+#naCountDF
+colSums(is.na(allBeerDataDF ))
+```
+
+```{r}
+# Add median column for Alcohol Content and Bitterness Units
+allBeerDataDF$medianAlcoholContent <- sapply(allBeerDataDF$AlcoholByVolume,median)
+allBeerDataDF$medianBitternesUnits <- sapply(allBeerDataDF$BitternessUnits,median)
+```
+## Compute the median alcohol content and international bitterness unit for each state. Plot a bar chart to compare. 
+```{r}
+# Create plot data for the median alcohol content and international bitterness unit for each state,
+#   then plot
+medianAlcholBitternessPlotData <- data.frame("State" = allBeerDataDF$State,
+                       "MedianAlcoholContent" = allBeerDataDF$medianAlcoholContent,
+                       "MedianBitternessUnits" = allBeerDataDF$BitternessUnits,
+                       stringsAsFactors = FALSE)
+ggplot(medianAlcholBitternessPlotData) +    
+    aes(x=MedianAlcoholContent,y=MedianBitternessUnits,fill=medianAlcholBitternessPlotData$State) +   
+    geom_bar(stat="identity") 
+```
+## Which state has the maximum alcoholic (ABV) beer? Which state has the most bitter (IBU) beer?
+```{r}
+maxDataByState$AlcoholByVolume <- group_by(allBeerDataDF,State) %>% summarize(AlcoholByVolume=max(AlcoholByVolume,na.rm=TRUE))
+maxDataByState$BitternessUnits<- group_by(allBeerDataDF,State) %>% summarize(BitternessUnits=max(BitternessUnits,na.rm=TRUE))
+
+maxDataByState$AlcoholByVolume
+
+maxDataByState$BitternessUnits
+```
+##	Summary statistics for the ABV variable.
+
+```{r}
+summary(allBeerDataDF$AlcoholByVolume)
+```
+## Is there an apparent relationship between the bitterness of the beer and its alcoholic content? Draw a scatter plot.
+```{r}
