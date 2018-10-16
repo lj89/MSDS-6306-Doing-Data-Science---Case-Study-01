@@ -14,6 +14,8 @@ output: html_document
 # Load Libraries
 library(dplyr)
 library(ggplot2)
+library(knitr)
+library(kableExtra)
 ```
 
 ```{r}
@@ -30,22 +32,40 @@ names(breweryDF) <- c("BreweryID","BreweryName","City","State") # rename table c
 ```{r}
 #Q1 Obtain number of breweries in each state using group_by function in library dplyr,
 #  then show data with the summarize function
-breweryStateCnt <- group_by(breweryDF,State)
-summarize(breweryStateCnt,count=n())
+#breweryStateCnt <- group_by(breweryDF,State)
+#summarize(breweryStateCnt,count=n())
+
+# create a data frame for number of breweries in each state;
+#df=count(breweryDF , "State")
+
+#create a histogram for df above called Figure 1;
+#ggplot(data=df, aes(x=State, y = freq)) + 
+  #geom_histogram(stat="identity", col="black", aes(fill=freq)) + coord_flip()+ 
+  #theme(axis.text.y=element_text(size=6)) + 
+  #xlab("State") + ylab("Number of Breweries per State") +
+  #geom_text(size=2, aes(label=freq), position=position_dodge(width=1), vjust=0.5) +
+  #scale_fill_gradient2("Number per State", low = "sky blue", mid="light blue", high = "blue", midpoint=20)
+
 ```
 ```{r}
 #Q2 The code merged brewery and beer data into the brewDataDF data frame
 allBeerDataDF <- merge.data.frame(breweryDF,beerDF,by="BreweryID")
 #write.table(allBeerDataDF,".\\OutputFiles\\MergedBeerData1.csv",quote=FALSE,sep=',',row.names=FALSE)
-head(allBeerDataDF,6)
-tail(allBeerDataDF,6)
+df1= head(allBeerDataDF,6)
+df2= tail(allBeerDataDF,6)
+#create a table to display the head called Table 1.
+kable(df1) %>% kable_styling(bootstrap_options = "striped", latex_options =c("striped","hold_position"),full_width = F)
+#create a table to display the tail called Table 2.
+kable(df2) %>% kable_styling(bootstrap_options = "striped", full_width = F)
+
 ```
 
 ```{r}
 #Q3 Reporting NA count, put in data frame for easier display options
 naCountDF <-as.data.frame(sapply(allBeerDataDF, function(x) sum(length(which(is.na(x))))))
 names(naCountDF) <- ("NA Count") # rename columns
-naCountDF
+##create a table to display the nacount called Table 3.
+kable(naCountDF)%>% kable_styling(bootstrap_options = "striped", latex_options =c("striped","hold_position"),full_width = F)
 ```
 
 ```{r}
@@ -58,7 +78,7 @@ names(medianIBU) <- c("State","MedianBitternessUnits") # Add Column Names
 
 medianBeerData <- merge(medianABV,medianIBU,"State")   # Merge median ABV & IBU into one DF 
 
-# Plot ABV by State, flip axes for easier reading, sort by ABV
+# Plot ABV by State, flip axes for easier reading, sort by ABV, called Figure 2.
 ggplot(medianBeerData) + 
   aes(x=reorder(State,-MedianAlcoholByVolume),y=MedianAlcoholByVolume,fill=MedianBitternessUnits,na.omit=TRUE) +   
   geom_bar(stat="identity") + coord_flip() +                                                # make hoizontal plot
@@ -70,7 +90,7 @@ ggplot(medianBeerData) +
   guides(fill=guide_legend("Bitterness Units")) +                                           # label legend
   scale_fill_gradientn(colours = rainbow(3))
 
-# Plot IBU by State, flip axes for easier reading, sort by IBU
+# Plot IBU by State, flip axes for easier reading, sort by IBU, called Figure 3.
 ggplot(medianBeerData) + 
   aes(x=reorder(State,-MedianBitternessUnits),y=MedianBitternessUnits,fill=MedianAlcoholByVolume,na.omit=TRUE) +   
   geom_bar(stat="identity") + coord_flip() +                                                # make hoizontal plot
@@ -85,31 +105,42 @@ ggplot(medianBeerData) +
 
 ```{r}
 #Q5 Identifying state with max ABV (alcohol) & IBU (bitterness)
-allBeerDataDF[which.max(allBeerDataDF$AlcoholByVolume),]
+df3=allBeerDataDF[which.max(allBeerDataDF$AlcoholByVolume),]
 
 #The state with the maximum alcoholic beer is Colorado. It has a 0.128 ABV and comes from the Upslope Brewing Company. The beer is the Lee Hill Series Vol. 5, a Belgian Style Quadrupel Ale.
 
-allBeerDataDF[which.max(allBeerDataDF$BitternessUnits),]
+df4=allBeerDataDF[which.max(allBeerDataDF$BitternessUnits),]
 #The state with the maximum bitterness is Oregon. It has a 0.082 IBU and comes from the Astoria Brewing Company. The beer is the Bitter Bitch Imperial IPA.
+
+#create a table to display the max ABV called Table 4.
+kable(df3)%>% kable_styling(bootstrap_options = "striped", position="center",font_size=11, full_width =T)
+#create a table to display the max IBU called Table 5.
+kable(df4)%>% kable_styling(bootstrap_options = "striped", latex_options =c("striped","hold_position"),font_size=11,full_width = F)
 ```
 ```{r}
 #Q6 Below are the summary statistics for the Achohol By Volume (ABV)
-summary(allBeerDataDF$AlcoholByVolume)
+df5=summary(allBeerDataDF$AlcoholByVolume)
+df5
 ```
 ```{r}
 #Q7 Is there an apparent relationship between the bitterness fo the beer and its alcoholic content
 
-#  this needs some work, not sure all the data is being plotted
+myplot <- ggplot(allBeerDataDF, aes(BitternessUnits, AlcoholByVolume,col=AlcoholByVolume)) +
+  geom_point()+
+  ggtitle("Potential Relationship between ABV and IBU") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  xlab("Alcohol Content") +
+  ylab("Bitterness") +
+  coord_flip()
+#create a scatterplot of ABV vs IBU called Figure 4.
+myplot 
+#fit data by lm and create a chart called Figure 5.
+myplot+geom_smooth(method = "lm", colour = "black", fill="yellow")
 
-ggplot(medianBeerData) + 
-  aes(x=MedianAlcoholByVolume,y=MedianBitternessUnits,na.omit=TRUE) +   
-  geom_point(stat="identity") +
-  theme(axis.text.y=element_text(size=6)) +                                                 # decrease axis font
-  labs(title = "ABV vs IBU",x="Medain Alcohol By Volume (ABV)",y="Median International Bitternesss Units (IBU)") + # add axes titles
-  theme(plot.title = element_text(color="dark blue",hjust=0.5)) +                           # format main title
-  theme(axis.title.x = element_text(color="dark blue")) +                                   # format x title
-  theme(axis.title.y = element_text(color="dark blue"))                                     # format y title
-#  guides(fill=guide_legend("Alcohol By Volume"))                                           # label legend
-#  scale_fill_gradientn(colours = rainbow(4))
+#geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
+myplot+geom_smooth(colour = "black", fill="yellow") 
+
+#conclusion:
+
 ```
 
