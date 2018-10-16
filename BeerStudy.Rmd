@@ -43,7 +43,7 @@ kable(brewerySummaryDF,format="html", caption="Table 1-Brewery Count by State",a
   kable_styling(bootstrap_options = "striped", full_width = F)
 
 #create a histogram for df above called Figure 1;
-ggplot(data=brewerySummaryDF, aes(x=State, y=count)) + 
+ggplot(data=brewerySummaryDF, aes(x=reorder(State,-count), y=count)) + 
   geom_histogram(stat="identity", col="black", aes(fill=count)) + coord_flip()+ 
   theme(axis.text.y=element_text(size=6)) + 
   xlab("State") + ylab("Number of Breweries per State") +
