@@ -97,7 +97,7 @@ medianBeerData <- merge(medianABV,medianIBU,"State")   # Merge median ABV & IBU 
 
 # Plot ABV by State, flip axes for easier reading, sort by ABV, called Figure 2.
 ggplot(medianBeerData) + 
-  aes(x=reorder(State,-MedianAlcoholByVolume),y=MedianAlcoholByVolume,fill=MedianBitternessUnits,na.omit=TRUE) +   
+  aes(x=reorder(State,-MedianAlcoholByVolume),y=MedianAlcoholByVolume,fill=MedianAlcoholByVolume,na.omit=TRUE) +   
   geom_bar(stat="identity") + coord_flip() +                                                # make hoizontal plot
   theme(axis.text.y=element_text(size=6)) +                                                 # decrease axis font
   labs(title = "ABV by State",x="State",y="Median Alcohol by Volume (ABV)") +               # add axes titles
@@ -109,7 +109,7 @@ ggplot(medianBeerData) +
 
 # Plot IBU by State, flip axes for easier reading, sort by IBU, called Figure 3.
 ggplot(medianBeerData) + 
-  aes(x=reorder(State,-MedianBitternessUnits),y=MedianBitternessUnits,fill=MedianAlcoholByVolume,na.omit=TRUE) +   
+  aes(x=reorder(State,-MedianBitternessUnits),y=MedianBitternessUnits,fill=MedianBitternessUnits,na.omit=TRUE) +   
   geom_bar(stat="identity") + coord_flip() +                                                # make hoizontal plot
   theme(axis.text.y=element_text(size=6)) +                                                 # decrease axis font
   labs(title = "IBU by State",x="State",y="Median International Bitternesss Units (IBU)") + # add axes titles
