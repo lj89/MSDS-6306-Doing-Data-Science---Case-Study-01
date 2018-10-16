@@ -120,7 +120,7 @@ ggplot(medianBeerData) +
   scale_fill_gradientn(colours = rainbow(4))
 ```
 
-```{r}
+```{r warning=FALSE}
 #Q5 Identifying state with max ABV (alcohol) & IBU (bitterness)
 #df3=allBeerDataDF[which.max(allBeerDataDF$AlcoholByVolume),]
 #df4=allBeerDataDF[which.max(allBeerDataDF$BitternessUnits),]
@@ -141,12 +141,14 @@ kable(allBeerDataDF[which.max(allBeerDataDF$BitternessUnits),],format="html",
       caption="Table 6 - State with the Highest International Bitterness Units (IBU)",align='c',row.names=F) %>% 
   kable_styling(bootstrap_options = "striped", full_width = F)
 ```
+
 ```{r}
 #Q6 Below are the summary statistics for the Achohol By Volume (ABV)
 df5=summary(allBeerDataDF$AlcoholByVolume)
 df5
 ```
-```{r}
+
+```{r warning=FALSE}
 #Q7 Is there an apparent relationship between the bitterness fo the beer and its alcoholic content
 
 myplot <- ggplot(allBeerDataDF, aes(BitternessUnits, AlcoholByVolume,col=AlcoholByVolume)) +
