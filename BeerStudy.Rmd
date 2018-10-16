@@ -8,14 +8,16 @@ output: html_document
 ##Notes to partner
 ##Please add comments and better code as you see fit
 
-
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE) # set echo to false for better presentation
+```
 
 ```{r message=FALSE, warning=FALSE}
 # Load Libraries
-library(dplyr)
-library(ggplot2)
-library(knitr)
-library(kableExtra)
+library(dplyr)      # for string functions
+library(ggplot2)    # for plots
+library(kableExtra) # for table formatting
+library(knitr)      # for presenting in html
 ```
 
 ```{r}
@@ -29,46 +31,61 @@ breweryDF <- read.csv(".\\ImportFiles\\Breweries.csv",header=TRUE,sep=",",string
 names(breweryDF) <- c("BreweryID","BreweryName","City","State") # rename table columns
 ```
 
-```{r}
+```{r warning=FALSE}
 #Q1 Obtain number of breweries in each state using group_by function in library dplyr,
 #  then show data with the summarize function
-#breweryStateCnt <- group_by(breweryDF,State)
-#summarize(breweryStateCnt,count=n())
+breweryStateCnt <- group_by(breweryDF,State)                   # get brewery count by state
+brewerySummaryDF <- summarize(breweryStateCnt,count=n())       # put data into a dataframe for easier manipulation
+#names(brewerySummaryDF) <-c("State","Number of Breweries")     # set column names
 
-# create a data frame for number of breweries in each state;
-#df=count(breweryDF , "State")
+# Print Brewery Count by State
+kable(brewerySummaryDF,format="html", caption="Table 1-Brewery Count by State",align='c') %>% 
+  kable_styling(bootstrap_options = "striped", full_width = F)
 
 #create a histogram for df above called Figure 1;
-#ggplot(data=df, aes(x=State, y = freq)) + 
-  #geom_histogram(stat="identity", col="black", aes(fill=freq)) + coord_flip()+ 
-  #theme(axis.text.y=element_text(size=6)) + 
-  #xlab("State") + ylab("Number of Breweries per State") +
-  #geom_text(size=2, aes(label=freq), position=position_dodge(width=1), vjust=0.5) +
-  #scale_fill_gradient2("Number per State", low = "sky blue", mid="light blue", high = "blue", midpoint=20)
+ggplot(data=brewerySummaryDF, aes(x=State, y=count)) + 
+  geom_histogram(stat="identity", col="black", aes(fill=count)) + coord_flip()+ 
+  theme(axis.text.y=element_text(size=6)) + 
+  xlab("State") + ylab("Number of Breweries per State") +
+  geom_text(size=2, aes(label=count), position=position_dodge(width=1), vjust=0.5) +
+  scale_fill_gradient2("Number per State", low = "sky blue", mid="light blue", high = "blue", midpoint=20)
 
 ```
 ```{r}
 #Q2 The code merged brewery and beer data into the brewDataDF data frame
 allBeerDataDF <- merge.data.frame(breweryDF,beerDF,by="BreweryID")
 #write.table(allBeerDataDF,".\\OutputFiles\\MergedBeerData1.csv",quote=FALSE,sep=',',row.names=FALSE)
-df1= head(allBeerDataDF,6)
-df2= tail(allBeerDataDF,6)
-#create a table to display the head called Table 1.
-kable(df1) %>% kable_styling(bootstrap_options = "striped", latex_options =c("striped","hold_position"),full_width = F)
-#create a table to display the tail called Table 2.
-kable(df2) %>% kable_styling(bootstrap_options = "striped", full_width = F)
 
+#df1= head(allBeerDataDF,6)
+#df2= tail(allBeerDataDF,6)
+#create a table to display the head called Table 1.
+#kable(df1) %>% kable_styling(bootstrap_options = "striped", latex_options =c("striped","hold_position"),full_width = F)
+#create a table to display the tail called Table 2.
+#kable(df2) %>% kable_styling(bootstrap_options = "striped", full_width = F)
+
+# Print the first 6 lines of the merged beer & brewery data
+kable(head(allBeerDataDF,6),format="html",caption="Table 2 - Merged beer and brewery data (BEGINNING OF DATA)",align='c',row.names = F) %>%
+  kable_styling(full_width = F)
+
+# Print the last 6 lines of the merged beer & brewery data
+kable(tail(allBeerDataDF,6),format="html",caption="Table 3 - Merged beer and brewery data (END OF DATA)",align='c', row.names = F) %>%
+  kable_styling(full_width = F)
 ```
 
 ```{r}
 #Q3 Reporting NA count, put in data frame for easier display options
 naCountDF <-as.data.frame(sapply(allBeerDataDF, function(x) sum(length(which(is.na(x))))))
 names(naCountDF) <- ("NA Count") # rename columns
+
 ##create a table to display the nacount called Table 3.
-kable(naCountDF)%>% kable_styling(bootstrap_options = "striped", latex_options =c("striped","hold_position"),full_width = F)
+#kable(naCountDF)%>% kable_styling(bootstrap_options = "striped", latex_options =c("striped","hold_position"),full_width = F)
+
+# Print the NA Counts by State
+kable(naCountDF,format="html", caption="Table 4-NA Count by State (NA=blanks)",align='c') %>% 
+  kable_styling(bootstrap_options = "striped", full_width = F)
 ```
 
-```{r}
+```{r warning=FALSE}
 #Q4 Creating DF for median Alcohol by Volume (ABV) and International Bitterness Units (IBU)
 #   NA's are ignored in calculations, and associated state is inlcuded in the data frame
 medianABV <- aggregate(allBeerDataDF$AlcoholByVolume, list(allBeerDataDF$State), median, na.rm=TRUE)
@@ -105,17 +122,24 @@ ggplot(medianBeerData) +
 
 ```{r}
 #Q5 Identifying state with max ABV (alcohol) & IBU (bitterness)
-df3=allBeerDataDF[which.max(allBeerDataDF$AlcoholByVolume),]
+#df3=allBeerDataDF[which.max(allBeerDataDF$AlcoholByVolume),]
+#df4=allBeerDataDF[which.max(allBeerDataDF$BitternessUnits),]
+#The state with the maximum bitterness is Oregon. It has a 0.082 IBU and comes from the Astoria Brewing Company. The beer is the Bitter Bitch Imperial IPA.
+#create a table to display the max ABV called Table 4.
+#kable(df3)%>% kable_styling(bootstrap_options = "striped", position="center",font_size=11, full_width =T)
+#create a table to display the max IBU called Table 5.
+#kable(df4)%>% kable_styling(bootstrap_options = "striped", latex_options =c("striped","hold_position"),font_size=11,full_width = F)
+
+# Print Info about State with the Most Alcohol by Volume
+kable(allBeerDataDF[which.max(allBeerDataDF$AlcoholByVolume),],format="html", 
+      caption="Table 5 - State with the Most Alcohol by Volume (ABV)",align='c',row.names=F) %>% 
+  kable_styling(bootstrap_options = "striped", full_width = F)
 
 #The state with the maximum alcoholic beer is Colorado. It has a 0.128 ABV and comes from the Upslope Brewing Company. The beer is the Lee Hill Series Vol. 5, a Belgian Style Quadrupel Ale.
 
-df4=allBeerDataDF[which.max(allBeerDataDF$BitternessUnits),]
-#The state with the maximum bitterness is Oregon. It has a 0.082 IBU and comes from the Astoria Brewing Company. The beer is the Bitter Bitch Imperial IPA.
-
-#create a table to display the max ABV called Table 4.
-kable(df3)%>% kable_styling(bootstrap_options = "striped", position="center",font_size=11, full_width =T)
-#create a table to display the max IBU called Table 5.
-kable(df4)%>% kable_styling(bootstrap_options = "striped", latex_options =c("striped","hold_position"),font_size=11,full_width = F)
+kable(allBeerDataDF[which.max(allBeerDataDF$BitternessUnits),],format="html", 
+      caption="Table 6 - State with the Highest International Bitterness Units (IBU)",align='c',row.names=F) %>% 
+  kable_styling(bootstrap_options = "striped", full_width = F)
 ```
 ```{r}
 #Q6 Below are the summary statistics for the Achohol By Volume (ABV)
