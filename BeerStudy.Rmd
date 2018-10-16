@@ -104,7 +104,7 @@ ggplot(medianBeerData) +
   theme(plot.title = element_text(color="dark blue",hjust=0.5)) +                           # format main title
   theme(axis.title.x = element_text(color="dark blue")) +                                   # format x title
   theme(axis.title.y = element_text(color="dark blue")) +                                   # format y title
-  guides(fill=guide_legend("Bitterness Units")) +                                           # label legend
+  guides(fill=guide_legend("Alcohol By Volume")) +                                           # label legend
   scale_fill_gradientn(colours = rainbow(3))
 
 # Plot IBU by State, flip axes for easier reading, sort by IBU, called Figure 3.
@@ -116,7 +116,7 @@ ggplot(medianBeerData) +
   theme(plot.title = element_text(color="dark blue",hjust=0.5)) +                           # format main title
   theme(axis.title.x = element_text(color="dark blue")) +                                   # format x title
   theme(axis.title.y = element_text(color="dark blue")) +                                   # format y title
-  guides(fill=guide_legend("Alcohol By Volume")) +                                          # label legend
+  guides(fill=guide_legend("Bitterness Units")) +                                          # label legend
   scale_fill_gradientn(colours = rainbow(4))
 ```
 
