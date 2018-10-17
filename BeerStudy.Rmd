@@ -5,9 +5,6 @@ date: "October 16, 2018"
 output: html_document
 ---
 
-##Notes to partner
-##Please add comments and better code as you see fit
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE) # set echo to false for better presentation
 ```
@@ -18,6 +15,7 @@ library(dplyr)      # for string functions
 library(ggplot2)    # for plots
 library(kableExtra) # for table formatting
 library(knitr)      # for presenting in html
+library(tidyr)
 ```
 
 ```{r}
@@ -36,11 +34,6 @@ names(breweryDF) <- c("BreweryID","BreweryName","City","State") # rename table c
 #  then show data with the summarize function
 breweryStateCnt <- group_by(breweryDF,State)                   # get brewery count by state
 brewerySummaryDF <- summarize(breweryStateCnt,count=n())       # put data into a dataframe for easier manipulation
-#names(brewerySummaryDF) <-c("State","Number of Breweries")     # set column names
-
-# Print Brewery Count by State
-kable(brewerySummaryDF,format="html", caption="Table 1-Brewery Count by State",align='c') %>% 
-  kable_styling(bootstrap_options = "striped", full_width = F)
 
 #create a histogram for df above called Figure 1;
 ggplot(data=brewerySummaryDF, aes(x=reorder(State,-count), y=count)) + 
@@ -52,10 +45,10 @@ ggplot(data=brewerySummaryDF, aes(x=reorder(State,-count), y=count)) +
   scale_fill_gradient2("Number per State", low = "sky blue", mid="light blue", high = "blue", midpoint=20) # set color scheme
 
 ```
+
 ```{r}
 #Q2 The code merged brewery and beer data into the brewDataDF data frame
 allBeerDataDF <- merge.data.frame(breweryDF,beerDF,by="BreweryID")
-#write.table(allBeerDataDF,".\\OutputFiles\\MergedBeerData1.csv",quote=FALSE,sep=',',row.names=FALSE)
 
 # Print the first 6 lines of the merged beer & brewery data
 kable(head(allBeerDataDF,6),format="html",caption="Table 2 - Merged beer and brewery data (BEGINNING OF DATA)",align='c',row.names = F) %>%
@@ -146,8 +139,15 @@ scatterplot <- ggplot(allBeerDataDF, aes(BitternessUnits, AlcoholByVolume,col=Al
 
 #fit data by lm to scatterplot
 scatterplot+geom_smooth(method = "lm", colour = "black", fill="yellow")
-
-#conclusion:
-
 ```
+
+<center><div class="green">
+r = 0.671, positive linear correlation
+$$r^{2} = 0.4502$$
+</div></center>
+
+### Conclusion
+
+*45% of the data can be explained by the linear model*
+
 

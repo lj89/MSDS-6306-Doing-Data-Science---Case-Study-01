@@ -2,7 +2,9 @@
 title: "Beer Study"
 author: "Steve Bramhall, Lei Jiang"
 date: "October 16, 2018"
-output: ioslides_presentation
+output: 
+  ioslides_presentation:
+    css: styles.css
 ---
 
 ```{r setup, include=FALSE}
@@ -12,11 +14,13 @@ knitr::opts_chunk$set(echo = FALSE)
 ## Agenda
 
 - Review Breweries by State
-- Beer & Brewery Data Merge 
+- Beer & Brewery Data Merge - Begining Data
+- Beer & Brewery Data Merge - Ending Data
 - Missing Data
 - Alcohol By Volmue (ABV) by State
 - International Bitterness Unit (IBU) by State
-- State with Max ABV and IBU
+- State with Highest ABV Beer
+- State with Highest IBU Beer
 - ABV Summary
 - ABV vs IBU
 - Conclusion
@@ -57,14 +61,14 @@ brewerySummaryDF <- summarize(breweryStateCnt,count=n())       # put data into a
 ggplot(data=brewerySummaryDF, aes(x=reorder(State,-count), y=count)) + 
   geom_histogram(stat="identity", col="black", aes(fill=count)) + coord_flip()+             # make horizontal plot
   theme(axis.text.y=element_text(size=6)) +                                                 # decrease axis font
-  labs(x="State",y="Breweries") +                                                           # add axes titles
+  labs(title="Fig 1 - Breweries by State",x="State",y="Breweries") +                                                           # add axes titles
   theme(plot.title = element_text(color="dark blue",hjust=0.5)) +                           # format main title
   geom_text(size=2, aes(label=count), position=position_dodge(width=1), hjust=-1.0) +       # format plot text data
   scale_fill_gradient2("Number per State", low = "sky blue", mid="light blue", high = "blue", midpoint=20) # set color scheme
 ```
 
 
-## Beer and Brewery Data Merge
+## Beer and Brewery Data Merge | Beginning Data {.smaller}
 
 ```{r message=FALSE, warning=FALSE, echo = FALSE}
 #Q2 The code merged brewery and beer data into the brewDataDF data frame
@@ -73,11 +77,15 @@ allBeerDataDF <- merge.data.frame(breweryDF,beerDF,by="BreweryID")
 
 # Print the first 6 lines of the merged beer & brewery data
 kable(head(allBeerDataDF,6),format="html",caption="Table 2 - Merged beer and brewery data (BEGINNING OF DATA)",align='c',row.names = F) %>%
-  kable_styling(full_width = F)
+    kable_styling(latex_options="scale_down",bootstrap_options = "striped")
+#    kable_styling(font_size=4,bootstrap_options = "striped", "condensed")
+```
 
+## Beer and Brewery Data Merge | Ending Data {.smaller}
+```{r message=FALSE, warning=FALSE, echo = FALSE}
 # Print the last 6 lines of the merged beer & brewery data
 kable(tail(allBeerDataDF,6),format="html",caption="Table 3 - Merged beer and brewery data (END OF DATA)",align='c', row.names = F) %>%
-  kable_styling(full_width = F)
+  kable_styling(font_size=4,bootstrap_options = "striped", "condensed")
 ```
 
 ## Missing Data
@@ -87,11 +95,11 @@ naCountDF <-as.data.frame(sapply(allBeerDataDF, function(x) sum(length(which(is.
 names(naCountDF) <- ("NA Count") # rename columns
 
 # Print the NA Counts by State
-kable(naCountDF,format="html", caption="Table 4-NA Count by State (NA=blanks)",align='c') %>% 
+kable(naCountDF,format="html", caption="Table 4-NA Count by Variable (NA=blanks)",align='c') %>% 
   kable_styling(bootstrap_options = "striped", full_width = F)
 ```
 
-## Alcohol By Volmue (ABV) by State
+## Alcohol By Volume (ABV) by State
 ```{r fig.align="center", message=FALSE, warning=FALSE, echo = FALSE}
 #Q4 Creating DF for median Alcohol by Volume (ABV) and International Bitterness Units (IBU)
 #   NA's are ignored in calculations, and associated state is inlcuded in the data frame
@@ -130,7 +138,7 @@ ggplot(medianBeerData) +
   scale_fill_gradientn(colours = rainbow(4))
 ```
 
-## State with Max ABV and IBU
+## State with Highest ABV {.smaller}
 ```{r message=FALSE, warning=FALSE, echo = FALSE}
 #Q5 Identifying state with max ABV (alcohol) & IBU (bitterness)
 
@@ -138,13 +146,29 @@ ggplot(medianBeerData) +
 kable(allBeerDataDF[which.max(allBeerDataDF$AlcoholByVolume),],format="html", 
       caption="Table 5 - State with the Most Alcohol by Volume (ABV)",align='c',row.names=F) %>% 
   kable_styling(bootstrap_options = "striped", full_width = F)
+```
+<div class=white>
+Space between table and text
+Space between table and text
+</div>
+<div class=black>
+The state with the maximum alcoholic beer is Colorado. It has a 0.128 ABV and comes from the Upslope Brewing Company. The beer is the Lee Hill Series Vol. 5, a Belgian Style Quadrupel Ale.
+</div>
 
-#The state with the maximum alcoholic beer is Colorado. It has a 0.128 ABV and comes from the Upslope Brewing Company. The beer is the Lee Hill Series Vol. 5, a Belgian Style Quadrupel Ale.
-
+## State with Highest IBU Beer {.smaller}
+```{r message=FALSE, warning=FALSE, echo = FALSE}
 kable(allBeerDataDF[which.max(allBeerDataDF$BitternessUnits),],format="html", 
       caption="Table 6 - State with the Highest International Bitterness Units (IBU)",align='c',row.names=F) %>% 
   kable_styling(bootstrap_options = "striped", full_width = F)
 ```
+<div class=white>
+Space between table and text
+Space between table and text
+</div>
+<div class=black>
+The state with the highest bitterness beer score is Oregon. It has a 138 IBUs and comes from the Astoria Brewing Company. The beer is the Bitter Bitch Imperial IPA, an American Double/Imperial IPA.
+</div>
+
 ## ABV Summary
 ```{r message=FALSE, warning=FALSE, echo = FALSE}
 #Q6 Below are the summary statistics for the Achohol By Volume (ABV)
@@ -152,6 +176,7 @@ kable(t(summary(allBeerDataDF$AlcoholByVolume)),format="html",                  
       caption="Table 7 - Summary Statistics for Alcohol By Volume (ABV)",align='c',row.names=F) %>% 
   kable_styling(bootstrap_options = "striped", full_width = F)
 ```
+
 ## ABV vs IBU
 ```{r fig.align="center", message=FALSE, warning=FALSE, echo = FALSE}
 #Q7 Is there an apparent relationship between the bitterness fo the beer and its alcoholic content
@@ -167,6 +192,12 @@ scatterplot <- ggplot(allBeerDataDF, aes(BitternessUnits, AlcoholByVolume,col=Al
 #fit data by lm to scatterplot
 scatterplot+geom_smooth(method = "lm", colour = "black", fill="yellow")
 ```
-linear correlation r = 0.671
-45% of the data can be explained by the linear model
+<center><div class="green">
+r = 0.671, positive linear correlation
+$$r^{2} = 0.4502$$
+</div></center>
+
+## Conclusion
+
+*45% of the data can be explained by the linear model*
 
