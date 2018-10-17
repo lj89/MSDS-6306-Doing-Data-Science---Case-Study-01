@@ -1,7 +1,7 @@
 ---
 title: "MSDS6306 Sect404 Case Study 1-Beer Study"
 author: "Steve Bramhall, Lei Jiang"
-date: "October 1, 2018"
+date: "October 16, 2018"
 output: html_document
 ---
 
@@ -31,7 +31,7 @@ breweryDF <- read.csv(".\\ImportFiles\\Breweries.csv",header=TRUE,sep=",",string
 names(breweryDF) <- c("BreweryID","BreweryName","City","State") # rename table columns
 ```
 
-```{r warning=FALSE}
+```{r warning=FALSE, fig.align="center"}
 #Q1 Obtain number of breweries in each state using group_by function in library dplyr,
 #  then show data with the summarize function
 breweryStateCnt <- group_by(breweryDF,State)                   # get brewery count by state
@@ -44,24 +44,18 @@ kable(brewerySummaryDF,format="html", caption="Table 1-Brewery Count by State",a
 
 #create a histogram for df above called Figure 1;
 ggplot(data=brewerySummaryDF, aes(x=reorder(State,-count), y=count)) + 
-  geom_histogram(stat="identity", col="black", aes(fill=count)) + coord_flip()+ 
-  theme(axis.text.y=element_text(size=6)) + 
-  xlab("State") + ylab("Number of Breweries per State") +
-  geom_text(size=2, aes(label=count), position=position_dodge(width=1), vjust=0.5) +
-  scale_fill_gradient2("Number per State", low = "sky blue", mid="light blue", high = "blue", midpoint=20)
+  geom_histogram(stat="identity", col="black", aes(fill=count)) + coord_flip()+             # make horizontal plot
+  theme(axis.text.y=element_text(size=6)) +                                                 # decrease axis font
+  labs(title = "Fig 1 - Breweries Per State",x="State",y="Breweries") +                             # add axes titles
+  theme(plot.title = element_text(color="dark blue",hjust=0.5)) +                           # format main title
+  geom_text(size=2, aes(label=count), position=position_dodge(width=1), hjust=-1.0) +       # format plot text data
+  scale_fill_gradient2("Number per State", low = "sky blue", mid="light blue", high = "blue", midpoint=20) # set color scheme
 
 ```
 ```{r}
 #Q2 The code merged brewery and beer data into the brewDataDF data frame
 allBeerDataDF <- merge.data.frame(breweryDF,beerDF,by="BreweryID")
 #write.table(allBeerDataDF,".\\OutputFiles\\MergedBeerData1.csv",quote=FALSE,sep=',',row.names=FALSE)
-
-#df1= head(allBeerDataDF,6)
-#df2= tail(allBeerDataDF,6)
-#create a table to display the head called Table 1.
-#kable(df1) %>% kable_styling(bootstrap_options = "striped", latex_options =c("striped","hold_position"),full_width = F)
-#create a table to display the tail called Table 2.
-#kable(df2) %>% kable_styling(bootstrap_options = "striped", full_width = F)
 
 # Print the first 6 lines of the merged beer & brewery data
 kable(head(allBeerDataDF,6),format="html",caption="Table 2 - Merged beer and brewery data (BEGINNING OF DATA)",align='c',row.names = F) %>%
@@ -77,15 +71,12 @@ kable(tail(allBeerDataDF,6),format="html",caption="Table 3 - Merged beer and bre
 naCountDF <-as.data.frame(sapply(allBeerDataDF, function(x) sum(length(which(is.na(x))))))
 names(naCountDF) <- ("NA Count") # rename columns
 
-##create a table to display the nacount called Table 3.
-#kable(naCountDF)%>% kable_styling(bootstrap_options = "striped", latex_options =c("striped","hold_position"),full_width = F)
-
 # Print the NA Counts by State
 kable(naCountDF,format="html", caption="Table 4-NA Count by State (NA=blanks)",align='c') %>% 
   kable_styling(bootstrap_options = "striped", full_width = F)
 ```
 
-```{r warning=FALSE}
+```{r warning=FALSE, fig.align="center"}
 #Q4 Creating DF for median Alcohol by Volume (ABV) and International Bitterness Units (IBU)
 #   NA's are ignored in calculations, and associated state is inlcuded in the data frame
 medianABV <- aggregate(allBeerDataDF$AlcoholByVolume, list(allBeerDataDF$State), median, na.rm=TRUE)
@@ -100,11 +91,11 @@ ggplot(medianBeerData) +
   aes(x=reorder(State,-MedianAlcoholByVolume),y=MedianAlcoholByVolume,fill=MedianAlcoholByVolume,na.omit=TRUE) +   
   geom_bar(stat="identity") + coord_flip() +                                                # make hoizontal plot
   theme(axis.text.y=element_text(size=6)) +                                                 # decrease axis font
-  labs(title = "ABV by State",x="State",y="Median Alcohol by Volume (ABV)") +               # add axes titles
+  labs(title = "Fig 2 - ABV by State",x="State",y="Median Alcohol by Volume (ABV)") +       # add axes titles
   theme(plot.title = element_text(color="dark blue",hjust=0.5)) +                           # format main title
   theme(axis.title.x = element_text(color="dark blue")) +                                   # format x title
   theme(axis.title.y = element_text(color="dark blue")) +                                   # format y title
-  guides(fill=guide_legend("Alcohol By Volume")) +                                           # label legend
+  guides(fill=guide_legend("Alcohol By Volume")) +                                          # label legend
   scale_fill_gradientn(colours = rainbow(3))
 
 # Plot IBU by State, flip axes for easier reading, sort by IBU, called Figure 3.
@@ -112,23 +103,16 @@ ggplot(medianBeerData) +
   aes(x=reorder(State,-MedianBitternessUnits),y=MedianBitternessUnits,fill=MedianBitternessUnits,na.omit=TRUE) +   
   geom_bar(stat="identity") + coord_flip() +                                                # make hoizontal plot
   theme(axis.text.y=element_text(size=6)) +                                                 # decrease axis font
-  labs(title = "IBU by State",x="State",y="Median International Bitternesss Units (IBU)") + # add axes titles
+  labs(title = "Fig 3 - IBU by State",x="State",y="Median International Bitternesss Units (IBU)") + # add axes titles
   theme(plot.title = element_text(color="dark blue",hjust=0.5)) +                           # format main title
   theme(axis.title.x = element_text(color="dark blue")) +                                   # format x title
   theme(axis.title.y = element_text(color="dark blue")) +                                   # format y title
-  guides(fill=guide_legend("Bitterness Units")) +                                          # label legend
+  guides(fill=guide_legend("Bitterness Units")) +                                           # label legend
   scale_fill_gradientn(colours = rainbow(4))
 ```
 
 ```{r warning=FALSE}
 #Q5 Identifying state with max ABV (alcohol) & IBU (bitterness)
-#df3=allBeerDataDF[which.max(allBeerDataDF$AlcoholByVolume),]
-#df4=allBeerDataDF[which.max(allBeerDataDF$BitternessUnits),]
-#The state with the maximum bitterness is Oregon. It has a 0.082 IBU and comes from the Astoria Brewing Company. The beer is the Bitter Bitch Imperial IPA.
-#create a table to display the max ABV called Table 4.
-#kable(df3)%>% kable_styling(bootstrap_options = "striped", position="center",font_size=11, full_width =T)
-#create a table to display the max IBU called Table 5.
-#kable(df4)%>% kable_styling(bootstrap_options = "striped", latex_options =c("striped","hold_position"),font_size=11,full_width = F)
 
 # Print Info about State with the Most Alcohol by Volume
 kable(allBeerDataDF[which.max(allBeerDataDF$AlcoholByVolume),],format="html", 
@@ -144,27 +128,24 @@ kable(allBeerDataDF[which.max(allBeerDataDF$BitternessUnits),],format="html",
 
 ```{r}
 #Q6 Below are the summary statistics for the Achohol By Volume (ABV)
-df5=summary(allBeerDataDF$AlcoholByVolume)
-df5
+kable(t(summary(allBeerDataDF$AlcoholByVolume)),format="html",                                          # used transpose function to get desired format
+      caption="Table 7 - Summary Statistics for Alcohol By Volume (ABV)",align='c',row.names=F) %>% 
+  kable_styling(bootstrap_options = "striped", full_width = F)
 ```
 
-```{r warning=FALSE}
+```{r warning=FALSE, fig.align="center"}
 #Q7 Is there an apparent relationship between the bitterness fo the beer and its alcoholic content
 
-myplot <- ggplot(allBeerDataDF, aes(BitternessUnits, AlcoholByVolume,col=AlcoholByVolume)) +
-  geom_point()+
-  ggtitle("Potential Relationship between ABV and IBU") +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  xlab("Alcohol Content") +
-  ylab("Bitterness") +
-  coord_flip()
-#create a scatterplot of ABV vs IBU called Figure 4.
-myplot 
-#fit data by lm and create a chart called Figure 5.
-myplot+geom_smooth(method = "lm", colour = "black", fill="yellow")
+scatterplot <- ggplot(allBeerDataDF, aes(BitternessUnits, AlcoholByVolume,col=AlcoholByVolume)) +
+  geom_point() + coord_flip() +                                                             # make horizontal scatter plot
+  ggtitle("Fig 4 - ABV and IBU") +                                                          # add title
+  theme(plot.title = element_text(color="dark blue",hjust=0.5)) +                           # format main title
+  xlab("Alcohol Content") +  ylab("Bitterness") +                                           # add axis labels
+  theme(axis.title.x = element_text(color="dark blue")) +                                   # format x title
+  theme(axis.title.y = element_text(color="dark blue"))                                     # format y title
 
-#geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
-myplot+geom_smooth(colour = "black", fill="yellow") 
+#fit data by lm to scatterplot
+scatterplot+geom_smooth(method = "lm", colour = "black", fill="yellow")
 
 #conclusion:
 
