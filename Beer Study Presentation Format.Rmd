@@ -17,8 +17,8 @@ knitr::opts_chunk$set(echo = FALSE)
 - Beer & Brewery Data Merge - Begining Data
 - Beer & Brewery Data Merge - Ending Data
 - Missing Data
-- Alcohol By Volmue (ABV) by State
-- International Bitterness Unit (IBU) by State
+- Median Alcohol By Volmue (ABV) by State
+- Median International Bitterness Unit (IBU) by State
 - State with Highest ABV Beer
 - State with Highest IBU Beer
 - ABV Summary
@@ -67,6 +67,14 @@ ggplot(data=brewerySummaryDF, aes(x=reorder(State,-count), y=count)) +
   scale_fill_gradient2("Number per State", low = "sky blue", mid="light blue", high = "blue", midpoint=20) # set color scheme
 ```
 
+## States with Most Breweries Per Person
+<center>
+Fig 2 - States with Most Breweries Per Person
+![States with Most Breweries Per Person](.\\ImportFiles\\rsz_statesmostbreweriesperperson2.jpg)
+
+
+<font size="1">Ref <https://priceonomics.com/where-is-craft-beer-most-popular-in-america/></font>
+</center>
 
 ## Beer and Brewery Data Merge | Beginning Data {.smaller}
 
@@ -99,7 +107,7 @@ kable(naCountDF,format="html", caption="Table 4-NA Count by Variable (NA=blanks)
   kable_styling(bootstrap_options = "striped", full_width = F)
 ```
 
-## Alcohol By Volume (ABV) by State
+## Median Alcohol By Volume (ABV) by State
 ```{r fig.align="center", message=FALSE, warning=FALSE, echo = FALSE}
 #Q4 Creating DF for median Alcohol by Volume (ABV) and International Bitterness Units (IBU)
 #   NA's are ignored in calculations, and associated state is inlcuded in the data frame
@@ -115,7 +123,7 @@ ggplot(medianBeerData) +
   aes(x=reorder(State,-MedianAlcoholByVolume),y=MedianAlcoholByVolume,fill=MedianAlcoholByVolume,na.omit=TRUE) +   
   geom_bar(stat="identity") + coord_flip() +                                                # make hoizontal plot
   theme(axis.text.y=element_text(size=6)) +                                                 # decrease axis font
-  labs(title = "Fig 2 - ABV by State",x="State",y="Median Alcohol by Volume (ABV)") +       # add axes titles
+  labs(title = "Fig 2 - Median ABV by State",x="State",y="Median Alcohol by Volume (ABV)") +# add axes titles
   theme(plot.title = element_text(color="dark blue",hjust=0.5)) +                           # format main title
   theme(axis.title.x = element_text(color="dark blue")) +                                   # format x title
   theme(axis.title.y = element_text(color="dark blue")) +                                   # format y title
@@ -123,14 +131,14 @@ ggplot(medianBeerData) +
   scale_fill_gradientn(colours = rainbow(3))
 ```
 
-## International Bitterness Unit (IBU) by State
+## Median International Bitterness Unit (IBU) by State
 ```{r fig.align="center", message=FALSE, warning=FALSE, echo = FALSE}
 # Plot IBU by State, flip axes for easier reading, sort by IBU, called Figure 3.
 ggplot(medianBeerData) + 
   aes(x=reorder(State,-MedianBitternessUnits),y=MedianBitternessUnits,fill=MedianBitternessUnits,na.omit=TRUE) +   
   geom_bar(stat="identity") + coord_flip() +                                                # make hoizontal plot
   theme(axis.text.y=element_text(size=6)) +                                                 # decrease axis font
-  labs(title = "Fig 3 - IBU by State",x="State",y="Median International Bitternesss Units (IBU)") + # add axes titles
+  labs(title = "Fig 3 - Median IBU by State",x="State",y="Median International Bitternesss Units (IBU)") + # add axes titles
   theme(plot.title = element_text(color="dark blue",hjust=0.5)) +                           # format main title
   theme(axis.title.x = element_text(color="dark blue")) +                                   # format x title
   theme(axis.title.y = element_text(color="dark blue")) +                                   # format y title
@@ -175,6 +183,8 @@ The state with the highest bitterness beer score is Oregon. It has a 138 IBUs an
 kable(t(summary(allBeerDataDF$AlcoholByVolume)),format="html",                                          # used transpose function to get desired format
       caption="Table 7 - Summary Statistics for Alcohol By Volume (ABV)",align='c',row.names=F) %>% 
   kable_styling(bootstrap_options = "striped", full_width = F)
+
+boxplot(allBeerDataDF$AlcoholByVolume, main="Fig 4 - Alcohol By Volume Boxplot", xlab="All ABV Data", ylab="ABV",col="lightblue")
 ```
 
 ## ABV vs IBU
@@ -183,7 +193,7 @@ kable(t(summary(allBeerDataDF$AlcoholByVolume)),format="html",                  
 
 scatterplot <- ggplot(allBeerDataDF, aes(BitternessUnits, AlcoholByVolume,col=AlcoholByVolume)) +
   geom_point() + coord_flip() +                                                             # make horizontal scatter plot
-  ggtitle("Fig 4 - ABV and IBU") +                                                          # add title
+  ggtitle("Fig 5 - ABV and IBU") +                                                          # add title
   theme(plot.title = element_text(color="dark blue",hjust=0.5)) +                           # format main title
   xlab("Alcohol Content") +  ylab("Bitterness") +                                           # add axis labels
   theme(axis.title.x = element_text(color="dark blue")) +                                   # format x title
@@ -199,5 +209,13 @@ $$r^{2} = 0.4502$$
 
 ## Conclusion
 
-*45% of the data can be explained by the linear model*
+- *Set the Significance level, alpha = 0.05*
+- *Ran a Pearson R Correlation using RStudio*
+- *P-value < 2.2e-18, the correlation is statistically significant.*
+- *So as the alcohol by volume increases, there is a tendancy for the bitterness to increase as well.*
+- *This is an observational study so teh analysis is limited to teh population of this study.*
 
+## BACKUP
+```{r message=FALSE, warning=FALSE, echo = TRUE}
+cor.test(allBeerDataDF$AlcoholByVolume, allBeerDataDF$BitternessUnits)
+```
