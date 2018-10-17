@@ -129,7 +129,7 @@ kable(t(summary(allBeerDataDF$AlcoholByVolume)),format="html",                  
 ```{r warning=FALSE, fig.align="center"}
 #Q7 Is there an apparent relationship between the bitterness fo the beer and its alcoholic content
 
-scatterplot <- ggplot(allBeerDataDF, aes(BitternessUnits, AlcoholByVolume,col=AlcoholByVolume)) +
+scatterplot <- ggplot(allBeerDataDF,aes(AlcoholByVolume,BitternessUnits,col=AlcoholByVolume)) +
   geom_point() + coord_flip() +                                                             # make horizontal scatter plot
   ggtitle("Fig 4 - ABV and IBU") +                                                          # add title
   theme(plot.title = element_text(color="dark blue",hjust=0.5)) +                           # format main title
