@@ -15,7 +15,7 @@ library(dplyr)      # for string functions
 library(ggplot2)    # for plots
 library(kableExtra) # for table formatting
 library(knitr)      # for presenting in html
-library(tidyr)
+
 ```
 
 ```{r}
@@ -28,6 +28,7 @@ names(beerDF) <- c("BeerName","BeerID","AlcoholByVolume","BitternessUnits","Brew
 breweryDF <- read.csv(".\\ImportFiles\\Breweries.csv",header=TRUE,sep=",",stringsAsFactors = FALSE)
 names(breweryDF) <- c("BreweryID","BreweryName","City","State") # rename table columns
 ```
+##Q1 Obtain number of breweries in each state using group_by function in library dplyr,
 
 ```{r warning=FALSE, fig.align="center"}
 #Q1 Obtain number of breweries in each state using group_by function in library dplyr,
@@ -52,11 +53,11 @@ Fig 2 - States with Most Breweries Per Person
 allBeerDataDF <- merge.data.frame(breweryDF,beerDF,by="BreweryID")
 
 # Print the first 6 lines of the merged beer & brewery data
-kable(head(allBeerDataDF,6),format="html",caption="Table 2 - Merged beer and brewery data (BEGINNING OF DATA)",align='c',row.names = F) %>%
+kable(head(allBeerDataDF,6),format="html",caption="Table 1 - Merged beer and brewery data (BEGINNING OF DATA)",align='c',row.names = F) %>%
   kable_styling(full_width = F)
 
 # Print the last 6 lines of the merged beer & brewery data
-kable(tail(allBeerDataDF,6),format="html",caption="Table 3 - Merged beer and brewery data (END OF DATA)",align='c', row.names = F) %>%
+kable(tail(allBeerDataDF,6),format="html",caption="Table 2 - Merged beer and brewery data (END OF DATA)",align='c', row.names = F) %>%
   kable_styling(full_width = F)
 ```
 
@@ -66,7 +67,7 @@ naCountDF <-as.data.frame(sapply(allBeerDataDF, function(x) sum(length(which(is.
 names(naCountDF) <- ("NA Count") # rename columns
 
 # Print the NA Counts by State
-kable(naCountDF,format="html", caption="Table 4-NA Count by State (NA=blanks)",align='c') %>% 
+kable(naCountDF,format="html", caption="Table 3-NA Count by State (NA=blanks)",align='c') %>% 
   kable_styling(bootstrap_options = "striped", full_width = F)
 ```
 
@@ -110,20 +111,20 @@ ggplot(medianBeerData) +
 
 # Print Info about State with the Most Alcohol by Volume
 kable(allBeerDataDF[which.max(allBeerDataDF$AlcoholByVolume),],format="html", 
-      caption="Table 5 - State with the Most Alcohol by Volume (ABV)",align='c',row.names=F) %>% 
+      caption="Table 4 - State with the Most Alcohol by Volume (ABV)",align='c',row.names=F) %>% 
   kable_styling(bootstrap_options = "striped", full_width = F)
 
 #The state with the maximum alcoholic beer is Colorado. It has a 0.128 ABV and comes from the Upslope Brewing Company. The beer is the Lee Hill Series Vol. 5, a Belgian Style Quadrupel Ale.
 
 kable(allBeerDataDF[which.max(allBeerDataDF$BitternessUnits),],format="html", 
-      caption="Table 6 - State with the Highest International Bitterness Units (IBU)",align='c',row.names=F) %>% 
+      caption="Table 5 - State with the Highest International Bitterness Units (IBU)",align='c',row.names=F) %>% 
   kable_styling(bootstrap_options = "striped", full_width = F)
 ```
 
 ```{r}
 #Q6 Below are the summary statistics for the Achohol By Volume (ABV)
 kable(t(summary(allBeerDataDF$AlcoholByVolume)),format="html",                                          # used transpose function to get desired format
-      caption="Table 7 - Summary Statistics for Alcohol By Volume (ABV)",align='c',row.names=F) %>% 
+      caption="Table 6 - Summary Statistics for Alcohol By Volume (ABV)",align='c',row.names=F) %>% 
   kable_styling(bootstrap_options = "striped", full_width = F)
 
 boxplot(allBeerDataDF$AlcoholByVolume, main="Fig 4 - Alcohol By Volume Boxplot", xlab="All ABV Data", ylab="ABV",col="lightblue")
