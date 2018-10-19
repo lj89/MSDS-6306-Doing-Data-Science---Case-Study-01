@@ -1,4 +1,4 @@
-## Craft Beer Study  ![States with Most Breweries Per Person](.\\ImportFiles\\craftbeer2.jpg)
+## Craft Beer Study  ![picture](./ImportFiles/craftbeer2.jpg)
 
 *Steve Bramhall, Lei Jiang*
 
