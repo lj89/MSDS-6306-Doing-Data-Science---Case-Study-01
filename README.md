@@ -44,6 +44,7 @@
 ##### medianABV - *data frame containing the median alcohol by volume per state*
 ##### medianIBU - *data frame containing the median International Bitterness Units per state*
 ##### medianBeerData - *data frame containingthe merged medianAVB and medianIBU*
+##### meanABV - *mean alcohol by volume, NA's ignored*
 ##### scatterplot - *geom_point ggplot of ABV vs IBU*
 
 #### OTHER
