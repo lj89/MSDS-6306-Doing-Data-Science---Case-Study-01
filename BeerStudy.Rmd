@@ -19,7 +19,7 @@ library(knitr)      # for presenting in html
 ```
 
 
-####The following information comes from a study of craft beers in the U.S. A data set for 2410 craft beers and a data set fro 558 breweries were merged and used to provide interesting insights. Discussions include the analysis and code methods used in the analysis. The following will be reviewed and discussed. 
+####The following information comes from a study of craft beers in the U.S. A data set for 2410 craft beers and a data set for 558 breweries were merged and used to provide interesting insights. Discussions include the analysis and code methods used in the analysis. The following will be reviewed and discussed. 
 - Breweries by State
 - Beer & Brewery Data Merge  
 - Missing Data
@@ -30,7 +30,7 @@ library(knitr)      # for presenting in html
 - ABV vs IBU 
 - Next Steps
 
-####First the two data sets are read into data frames beerDF and breweryDF from csv files. An RStudio project was created so the team could reference their own local Github working directory. The the columns (variables) of each data frame was custom named to be more readable and to provide a handle to merge the data later.
+####First the two data sets are read into data frames beerDF and breweryDF from csv files. An RStudio project was created so the team could reference their own local Github working directory. The columns (variables) of each data frame were custom named to be more readable and to provide a handle to merge the data later.
 ```{r echo = TRUE}
 # Read beer data from csv file and put into breweryDF data frame.Then rename columns to be more readable.
 beerDF <- read.csv(".\\ImportFiles\\Beers.csv",header=TRUE,sep=",",stringsAsFactors = TRUE, encoding = "UTF-8")
@@ -43,7 +43,7 @@ names(breweryDF) <- c("BreweryID","BreweryName","City","State") # rename table c
 ```
 
 ####The number of breweries were grouped by state using the dplyr library function group_by. The summary of the grouped data was put into data frame brewerySummaryDF. The data frame makes it easier to work with in ggplot. ggplot was used to build Figure 1, a histogram of the brewery counts for each state. Washington DC is included with the states even though it's not technically a state. The plot has a gradient color scheme, is sorted from least to most breweries and each state has the brewery count next to their bar. The plot was turned horizontally and the state abbreviations were scaled down to make it easier to read.
-####Colorado has the most breweries and this may not be a surprise since Coors and Anheuser-Busch (Budwieser) are located there. West Virginia, the Dakotas, and DC each only have 1 craft brewery.
+####Colorado has the most breweries and this may not be a surprise since Coors and Anheuser-Busch (Budweiser) are located there. West Virginia, the Dakotas, and DC each only have 1 craft brewery.
 ```{r warning=FALSE, fig.align="center", echo = TRUE}
 #Obtain number of breweries in each state using group_by function in library dplyr
 breweryStateCnt <- group_by(breweryDF,State)                   # group brewery count by state
@@ -60,7 +60,7 @@ ggplot(data=brewerySummaryDF, aes(x=reorder(State,-count), y=count)) +
 ```
 
 ####The beer and brewery data frames were merged by BreweryID into data frame allBeerDataDF. kable from the kableExtra library was used to display nicely formated tables.
-####The first and last 6 entries are shown as evidence of a successful merger. The last BreweryID is 558 and provides additional evidence of a successful merge since we know the brewery data set contianed information on 558 breweries.
+####The first and last 6 entries are shown as evidence of a successful merge. The last BreweryID is 558 and provides additional evidence of a successful merge since we know the brewery data set contianed information on 558 breweries.
 ```{r echo = TRUE}
 #Merge brewery and beer data into the brewDataDF data frame
 allBeerDataDF <- merge.data.frame(breweryDF,beerDF,by="BreweryID")
@@ -86,8 +86,8 @@ kable(naCountDF,format="html", caption="Table 3-NA Count by State (NA=blanks)",a
   kable_styling(bootstrap_options = "striped", full_width = F)
 ```
 
-####Plots were created to display the "median" AVB and IBU per State. The median function was used in the aggregate function to create the medianABV data frame. Beer with no ABVs were removed. The IBU data required and additional na.omit to remove South Dakota from the data frame since all IBUs for South Dakota were blank. ggplot was used to create horizontal bar plots and both used a rainbow gradient color scheme.
-####The range for median AVBs is 4%-6%. Utah has the beer with the lowest median ABV at 4%. This is a very conservative state and 4% is the max ABV by law for packaged beers so this should be no surprise. DC, Kentucky, Missouri, and New Mexico round out the states with craft beers having the highest median AVBs.
+####Plots were created to display the "median" ABV and IBU per State. The median function was used in the aggregate function to create the medianABV data frame. Beer with no ABVs were removed. The IBU data required and additional na.omit to remove South Dakota from the data frame since all IBUs for South Dakota were blank. ggplot was used to create horizontal bar plots and both used a rainbow gradient color scheme.
+####The range for median ABVs is 4%-6%. Utah has the beer with the lowest median ABV at 4%. This is a very conservative state and 4% is the max ABV by law for packaged beers so this should be no surprise. DC, Kentucky, Missouri, and New Mexico round out the states with craft beers having the highest median ABVs.
 ```{r warning=FALSE, fig.align="center", echo=TRUE}
 #Create DF for median Alcohol by Volume (ABV) and International Bitterness Units (IBU)
 #   NA's are ignored in calculations, and associated state is inlcuded in the data frame
@@ -111,7 +111,7 @@ ggplot(medianBeerData) +
   scale_fill_gradientn(colours = rainbow(3))                                              # set color scheme
 ```
 
-####A beer’s bitterness comes from the amount of hops brewers add to beer. Higher IBUs = more hoppy beer. The range for median IBUs roughly  20 to 60. Wisconsin, Kansas, and Arizona have craft beers with the lowest medain IBUs. Maine has the highest median IBU and West Virginia and Florida follow. Maine has the highest median IBU and West Virginia and Florida follow.
+####A beer’s bitterness comes from the amount of hops brewers add to beer. Higher IBUs = more hoppy beer. The range for median IBUs is roughly  20 to 60. Wisconsin, Kansas, and Arizona have craft beers with the lowest medain IBUs. Maine has the highest median IBU and West Virginia and Florida follow.
 ```{r warning=FALSE, fig.align="center", echo=TRUE}
 # Plot IBU by State, flip axes for easier reading, sort by IBU, called Figure 3.
 ggplot(medianBeerData) + 
@@ -127,7 +127,7 @@ ggplot(medianBeerData) +
 ```
 
 ####The which.max function was used within kable to display the beer and brewery information for the beer that had the highest ABV and highest IBU.
-####Colorado has the beer with the highest ABV and Oregon and the beer with the highest IBU.
+####Colorado has the craft beer with the highest ABV and Oregon has the craft beer with the highest IBU.
 ```{r warning=FALSE}
 #Identifying state with max ABV (alcohol) & IBU (bitterness)
 
@@ -143,7 +143,7 @@ kable(allBeerDataDF[which.max(allBeerDataDF$BitternessUnits),],format="html",
   kable_styling(bootstrap_options = "striped", full_width = F)
 ```
 
-####The summary function was used with kable to display summary statistics for AVB. The data was transposed to display in a horizontal format. Then a boxplot is displayed which coincides with the AVB summary statistics. 
+####The summary function was used with kable to display summary statistics for ABV. The data was transposed to display in a horizontal format. Then a boxplot is displayed which coincides with the ABV summary statistics. The mean and median are fairly close to each other with the mean ~ 6%.
 ```{r}
 #Q6 Below are the summary statistics for the Achohol By Volume (ABV)
 kable(t(summary(allBeerDataDF$AlcoholByVolume)),format="html",                                          # used transpose function to get desired format
@@ -154,7 +154,7 @@ boxplot(allBeerDataDF$AlcoholByVolume, main="Fig 4 - Alcohol By Volume Boxplot",
 text(x=1, y=.06,"mean ~ 0.06",col=4)                                                                    # add mean to box plot
 ```
 
-####ggplot is once again used but this time to create a scatter plot of IBU vs ABV. Additionally, goem_smooth is used to show the linear fit for the data. The cor function is used to identify whether there is a statistically significant correlation with IBU and AVB. The code for this can be found in the Appendix section. The analysis used an alpha = 0.05. Below the plot, html tags and equation indicators are used to disply r and r-squared under the plot.
+####ggplot is once again used but this time to create a scatter plot of IBU vs ABV. Additionally, goem_smooth is used to show the linear fit for the data. The cor function was used to identify whether there is a statistically significant correlation with IBU and ABV. The code for this can be found in the Appendix section. The analysis used an alpha = 0.05. Below the plot, html tags and equation indicators are used to disply r and r-squared.
 ####We can see from the slope of the linear fit that there is a positive correlation and this is confirmed with an r = 0.671. This makes r-squared = .4502 and we conclude that 45% of the variance of the data can be explained by the linear model.
 ####The correlation function produces a p-value much less than the significance level of 0.05 which tells us that the correlation IS statistically significant.
 ```{r warning=FALSE, fig.align="center"}
