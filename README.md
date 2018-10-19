@@ -1,31 +1,49 @@
-Beer Study Codebook
+Craft Beer Study
+Steve Bramlhall, Lei Jiang
 
-Lei J
+The purpose of this project is to emulate a real world data science project that requires the following:
+-teamwork
+-data merging and munging
+-statistical analysis in Rstudio
+-well documented code (using R-Markdown)
+-source code control via Github
+-written communication
+-verbal communication 
 
-Data Dictionary:
+The project used information about 2410 craft beers and 558 breweries in the U.S. The study provides interesting insights and discussions that include the analysis and coding methods used in the analysis. A link to the verbal presentations can be found at the bottom of the R-Markdown file.
 
-Beers.csv:
 
-Name: Name of the beer.
+CODEBOOK
 
-Beer_ID: Unique identifier of the beer.
+INPUT FILES: Folder = ImportFiles
+1. Beers.csv - information about 2410 craft beers
+2. Breweries.csv - information about 558 breweries
+3. statesmostbreweriesperperson2.jpg - U.S. Map showing the most breweries per person
 
+OUTPUT FILES: Folder = OutputFiles
+NA, used for debugging during code development
+
+LIBRARIES
+dplyr:       for string functions
+ggplot2:     for plots
+kableExtra:  for table formatting
+knitr:       for presenting in html
+
+DEFINITIONS
 ABV: Alcohol by volume of the beer.
-
 IBU: International Bitterness Units of the beer.
 
-Brewery_ID: Brewery id associated with the beer.
+VARIABLES
+beerDF - data frame of beer data from csv file
+breweryDF - data frame of beer data from csv file
+breweryStateCnt - data frame of grouped brewery counts by state
+brewerySummaryDF - data frame of the summary data of brewery counts by state
+allBeerDataDF - data frame containing the merged beer data and brewery data
+naCountDF - data frame containing the NA counts for each variable in allBeerDataDF
+medianABV - data frame containing the median alcohol by volume per state
+medianIBU - data frame containing the median International Bitterness Units per state
+medianBeerData - data frame containingthe merged medianAVB and medianIBU
+scatterplot - geom_point ggplot of ABV vs IBU
 
-Style: Style of the beer.
-
-Ounces: Ounces of beer.
-
-Breweries.csv:
-
-Brew_ID: Unique identifier of the brewery.
-
-Name: Name of the brewery.
-
-City: City where the brewery is located.
-
-State: U.S. State where the brewery is located.
+OTHER
+In codes chunks where plots are built, warnings are turned off to clean up the messaging. The warnings state data with empty values were excluded in the plots. This is desired and intentional.

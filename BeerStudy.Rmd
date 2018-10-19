@@ -6,7 +6,7 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE) # set echo to false for better presentation
+knitr::opts_chunk$set(echo = FALSE) # each code chunk will have their own echo control
 ```
 
 ```{r message=FALSE, warning=FALSE}
@@ -128,7 +128,7 @@ ggplot(medianBeerData) +
 
 ####The which.max function was used within kable to display the beer and brewery information for the beer that had the highest ABV and highest IBU.
 ####Colorado has the craft beer with the highest ABV and Oregon has the craft beer with the highest IBU.
-```{r warning=FALSE}
+```{r warning=FALSE, echo=TRUE}
 #Identifying state with max ABV (alcohol) & IBU (bitterness)
 
 # Print Info about State with the Most Alcohol by Volume
@@ -144,8 +144,8 @@ kable(allBeerDataDF[which.max(allBeerDataDF$BitternessUnits),],format="html",
 ```
 
 ####The summary function was used with kable to display summary statistics for ABV. The data was transposed to display in a horizontal format. Then a boxplot is displayed which coincides with the ABV summary statistics. The mean and median are fairly close to each other with the mean ~ 6%.
-```{r}
-#Q6 Below are the summary statistics for the Achohol By Volume (ABV)
+```{r echo=TRUE}
+# Below are the summary statistics for the Achohol By Volume (ABV)
 kable(t(summary(allBeerDataDF$AlcoholByVolume)),format="html",                                          # used transpose function to get desired format
       caption="Table 6 - Summary Statistics for Alcohol By Volume (ABV)",align='c',row.names=F) %>% 
   kable_styling(bootstrap_options = "striped", full_width = F)
@@ -154,11 +154,11 @@ boxplot(allBeerDataDF$AlcoholByVolume, main="Fig 4 - Alcohol By Volume Boxplot",
 text(x=1, y=.06,"mean ~ 0.06",col=4)                                                                    # add mean to box plot
 ```
 
-####ggplot is once again used but this time to create a scatter plot of IBU vs ABV. Additionally, goem_smooth is used to show the linear fit for the data. The cor function was used to identify whether there is a statistically significant correlation with IBU and ABV. The code for this can be found in the Appendix section. The analysis used an alpha = 0.05. Below the plot, html tags and equation indicators are used to disply r and r-squared.
+####ggplot is once again used but this time to create a scatter plot of ABV vs IBU. Additionally, goem_smooth is used to show the linear fit for the data. The cor function was used to identify whether there is a statistically significant correlation with IBU and ABV. The code for this can be found in the Appendix section. The analysis used an alpha = 0.05. Below the plot, html tags and equation indicators are used to disply r and r-squared.
 ####We can see from the slope of the linear fit that there is a positive correlation and this is confirmed with an r = 0.671. This makes r-squared = .4502 and we conclude that 45% of the variance of the data can be explained by the linear model.
 ####The correlation function produces a p-value much less than the significance level of 0.05 which tells us that the correlation IS statistically significant.
-```{r warning=FALSE, fig.align="center"}
-#Q7 Is there an apparent relationship between the bitterness fo the beer and its alcoholic content
+```{r warning=FALSE, fig.align="center", echo=TRUE}
+#Plot ABV vs IBU and determine if there is a relationship between the two
 
 scatterplot <- ggplot(allBeerDataDF, aes(AlcoholByVolume,BitternessUnits,col=AlcoholByVolume)) +
   geom_point() + coord_flip() +                                                             # make horizontal scatter plot
@@ -168,7 +168,7 @@ scatterplot <- ggplot(allBeerDataDF, aes(AlcoholByVolume,BitternessUnits,col=Alc
   theme(axis.title.x = element_text(color="dark blue")) +                                   # format x title
   theme(axis.title.y = element_text(color="dark blue"))                                     # format y title
 
-#fit data by lm to scatterplot
+#linear fit by lm to scatterplot
 scatterplot+geom_smooth(method = "lm", colour = "black", fill="yellow")
 ```
 

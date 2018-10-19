@@ -113,7 +113,9 @@ kable(naCountDF,format="html", caption="Table 4-NA Count by Variable (NA=blanks)
 #   NA's are ignored in calculations, and associated state is inlcuded in the data frame
 medianABV <- aggregate(allBeerDataDF$AlcoholByVolume, list(allBeerDataDF$State), median, na.rm=TRUE)
 names(medianABV) <- c("State","MedianAlcoholByVolume") # Add Column Names
-medianIBU <- aggregate(allBeerDataDF$BitternessUnits, list(allBeerDataDF$State), median, na.rm=TRUE)
+
+# applied na.omit since South Dakota didn't have beers with IBUs
+medianIBU <- na.omit(aggregate(allBeerDataDF$BitternessUnits, list(allBeerDataDF$State), median, na.rm=TRUE))
 names(medianIBU) <- c("State","MedianBitternessUnits") # Add Column Names
 
 medianBeerData <- merge(medianABV,medianIBU,"State")   # Merge median ABV & IBU into one DF 
@@ -213,7 +215,7 @@ $$r^{2} = 0.4502$$
 - *Ran a Pearson R Correlation using RStudio*
 - *P-value < 2.2e-18, the correlation is statistically significant.*
 - *So as the alcohol by volume increases, there is a tendancy for the bitterness to increase as well.*
-- *This is an observational study so teh analysis is limited to teh population of this study.*
+- *This is an observational study so the analysis is limited to the population of this study.*
 
 ## BACKUP
 ```{r message=FALSE, warning=FALSE, echo = TRUE}
