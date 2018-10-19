@@ -151,7 +151,11 @@ kable(t(summary(allBeerDataDF$AlcoholByVolume)),format="html",                  
   kable_styling(bootstrap_options = "striped", full_width = F)
 
 boxplot(allBeerDataDF$AlcoholByVolume, main="Fig 4 - Alcohol By Volume Boxplot", xlab="All ABV Data", ylab="ABV",col="lightblue")
-text(x=1, y=.06,"mean ~ 0.06",col=4)                                                                    # add mean to box plot
+#text(x=1, y=.06,"mean ~ 0.06",col=4)  # add mean to box plot
+mean2<-mean(allBeerDataDF$AlcoholByVolume, trim=0, na.rm=TRUE)
+mean1<- round(mean2,digits=4)
+points(mean1, col="blue")
+text(x=1.1,mean1,"mean ~ 0.06", col="red")
 ```
 
 ####ggplot is once again used but this time to create a scatter plot of ABV vs IBU. Additionally, goem_smooth is used to show the linear fit for the data. The cor function was used to identify whether there is a statistically significant correlation with IBU and ABV. The code for this can be found in the Appendix section. The analysis used an alpha = 0.05. Below the plot, html tags and equation indicators are used to disply r and r-squared.
