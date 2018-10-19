@@ -146,12 +146,14 @@ kable(allBeerDataDF[which.max(allBeerDataDF$BitternessUnits),],format="html",
 ####The summary function was used with kable to display summary statistics for ABV. The data was transposed to display in a horizontal format. Then a boxplot is displayed which coincides with the ABV summary statistics. The mean and median are fairly close to each other with the mean ~ 6%.
 ```{r echo=TRUE}
 # Below are the summary statistics for the Achohol By Volume (ABV)
-kable(t(summary(allBeerDataDF$AlcoholByVolume)),format="html",                                          # used transpose function to get desired format
+kable(t(summary(allBeerDataDF$AlcoholByVolume)),format="html",                # used transpose function to get desired format
       caption="Table 6 - Summary Statistics for Alcohol By Volume (ABV)",align='c',row.names=F) %>% 
   kable_styling(bootstrap_options = "striped", full_width = F)
 
 boxplot(allBeerDataDF$AlcoholByVolume, main="Fig 4 - Alcohol By Volume Boxplot", xlab="All ABV Data", ylab="ABV",col="lightblue")
-text(x=1, y=.06,"mean ~ 0.06",col=4)                                                                    # add mean to box plot
+ABVmean<-round(mean(allBeerDataDF$AlcoholByVolume,trim=0,na.rm=TRUE),3)       # get mean ABV, ignore NA, round it
+points(ABVmean,col="red")                                                     # show red pt for mean ABV
+text(x=1.1, ABVmean,"mean ~ 0.06",col=4)                                      # add mean label to box plot
 ```
 
 ####ggplot is once again used but this time to create a scatter plot of ABV vs IBU. Additionally, goem_smooth is used to show the linear fit for the data. The cor function was used to identify whether there is a statistically significant correlation with IBU and ABV. The code for this can be found in the Appendix section. The analysis used an alpha = 0.05. Below the plot, html tags and equation indicators are used to disply r and r-squared.
