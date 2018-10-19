@@ -16,6 +16,15 @@
 
 ### CODEBOOK
 
+#### PROJECT FILES
+* .gitignore - lists local files specific to the team member, version control not needed
+* MSDS6306CaseStudy1.Rproj - Rstudio project file
+* BeerStudy.Rmd - main program
+* BeerStudy.html - html output from the main program
+* Presentation Notes2.docx - Notes about each slide to help with the video presentation
+* Beer Study Presentation Format.Rmd - ioslides version of presentation but not updated, we decided to use PowerPoint
+* styles.css - style info for the ioslides version (Beer Study Presentation Format.Rmd)
+
 #### INPUT FILES: (Folder = ImportFiles)
 1. Beers.csv - information about 2410 craft beers
 2. Breweries.csv - information about 558 breweries
