@@ -1,4 +1,4 @@
-## Craft Beer Study  ![picture](./ImportFiles/craftbeer2.jpg)
+## Craft Beer Study  ![picture](./ImportFiles/craftbeer3.jpg)
 
 *Steve Bramhall, Lei Jiang*
 
