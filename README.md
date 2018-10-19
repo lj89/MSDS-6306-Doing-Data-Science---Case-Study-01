@@ -35,16 +35,16 @@
 * IBU - International Bitterness Units of the beer.
 
 #### VARIABLES
-##### beerDF - data frame of beer data from csv file
-##### breweryDF - data frame of beer data from csv file
-##### breweryStateCnt - data frame of grouped brewery counts by state
-##### brewerySummaryDF - data frame of the summary data of brewery counts by state
-##### allBeerDataDF - data frame containing the merged beer data and brewery data
-##### naCountDF - data frame containing the NA counts for each variable in allBeerDataDF
-##### medianABV - data frame containing the median alcohol by volume per state
-##### medianIBU - data frame containing the median International Bitterness Units per state
-##### medianBeerData - data frame containingthe merged medianAVB and medianIBU
-##### scatterplot - geom_point ggplot of ABV vs IBU
+##### beerDF - *data frame of beer data from csv file*
+##### breweryDF - *data frame of beer data from csv file*
+##### breweryStateCnt - *data frame of grouped brewery counts by state*
+##### brewerySummaryDF - *data frame of the summary data of brewery counts by state*
+##### allBeerDataDF - *data frame containing the merged beer data and brewery data*
+##### naCountDF - *data frame containing the NA counts for each variable in allBeerDataDF*
+##### medianABV - *data frame containing the median alcohol by volume per state*
+##### medianIBU - *data frame containing the median International Bitterness Units per state*
+##### medianBeerData - *data frame containingthe merged medianAVB and medianIBU*
+##### scatterplot - *geom_point ggplot of ABV vs IBU*
 
 #### OTHER
 ##### In codes chunks where plots are built, warnings are turned off to clean up the messaging. The warnings state data with empty values were excluded in the plots. This is desired and intentional.
