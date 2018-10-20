@@ -55,3 +55,29 @@
 
 #### OTHER
 ##### In codes chunks where plots are built, warnings are turned off to clean up the messaging. The warnings state data with empty values were excluded in the plots. This is desired and intentional.
+
+#### Workload
+Introduction and Conclusion
+DRAFT: Steve
+REVISIONS: Lei and Steve
+
+R Code and Comments for Questions 1, 3, and 7
+PRIMARY: Lei
+REVISIONS: Steve
+
+R Code and Comments for Questions 2, 4, and 5
+PRIMARY: Steve
+REVISIONS: Lei
+
+R Code and Comments for Questions 6
+Together
+
+File Structure
+INITIAL: Lei
+FINAL: Steve
+
+Presentations
+Completed Individually
+
+#### Lei worked on the R code for Fig 1. number of breweries by state, Fig 5. correlation of ABV and IBU, and used kable to give nicer output for all the tables.  (And also the code for finding Pearson correlation coefficient although it is not required). And suggested using data of past sales of beers to find best ABV and IBU range to invest and getting customer survey data for recommendation part. And worked together on boxplot for ABV summary, drawing conlusion.
+#### Steve worked on R Code for merging the data, Fig 2, Fig 3 and writing of Introduction, Comments, Conclusion.
