@@ -185,9 +185,13 @@ $$r^{2} = 0.4502$$
 #### -Analyze population trends and review brewery/alcohol laws
 
 
+
+## Students' presentations:
+
+#### Lei's presentation video on youtube: https://youtu.be/oOQyaFVAUDs
+
 ## Appendix
 
-### Lei's presentation video on youtube: https://youtu.be/oOQyaFVAUDs
 
 #### R-code used to perform the correlation analysis.
 ```{r echo = TRUE}
