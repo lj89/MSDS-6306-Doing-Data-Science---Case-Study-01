@@ -76,8 +76,12 @@ File Structure
 INITIAL: Lei
 FINAL: Lei and Steve
 
+Readme
+INITIAL: Lei
+FINAL: Lei and Steve
+
 Presentations
 Completed Individually
 
 #### Lei worked on the R code for Fig 1. number of breweries by state, Fig 5. correlation of ABV and IBU, and used kable to give nicer output for all the tables.  (And also the code for finding Pearson correlation coefficient although it is not required). And suggested using data of past sales of beers to find best ABV and IBU range to invest and getting customer survey data for recommendation part. And worked together on boxplot for ABV summary, drawing conlusion.
-#### Steve worked on R Code for merging the data, Fig 2, Fig 3 and writing of Introduction, Comments, Conclusion.
+#### Steve worked on R Code for merging the data, Fig 2, Fig 3 and major part of writing on Introduction, Comments, and Conclusion.
