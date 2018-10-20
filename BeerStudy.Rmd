@@ -188,6 +188,8 @@ $$r^{2} = 0.4502$$
 
 *This additional information would provide better guidance for craft beer investments*
 
+### Lei's presentation video on youtube: https://youtu.be/oOQyaFVAUDs
+
 ## Appendix
 
 #### R-code used to perform the correlation analysis.
