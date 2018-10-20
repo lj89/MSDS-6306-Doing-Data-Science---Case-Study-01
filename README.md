@@ -73,7 +73,7 @@ R Code and Comments for Questions 6
 Together
 
 File Structure
-INITIAL: Lei
+INITIAL: Lei and Steve
 FINAL: Lei and Steve
 
 Readme
