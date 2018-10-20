@@ -74,7 +74,7 @@ Together
 
 File Structure
 INITIAL: Lei
-FINAL: Steve
+FINAL: Lei and Steve
 
 Presentations
 Completed Individually
