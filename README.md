@@ -89,5 +89,6 @@ Presentations
 Completed Individually
 
 #### Lei worked on the R code for Fig 1. number of breweries by state, Fig 5. correlation of ABV and IBU, and used kable to give nicer output for all the tables.  (And also the code for finding Pearson correlation coefficient although it is not required). And suggested using data of past sales of beers to find best ABV and IBU range to invest and getting customer survey data for recommendation part. Le
-#### Steve worked on R Code for merging the data, Fig 2 median ABV by state, Fig 3 median IBU by state and major part of writing on Introduction, Comments, and Conclusion. And suggested that host/partner events and promotions to collect our own data Analyze population trends and review brewery/alcohol laws. We worked together on boxplot for ABV summary, drawing conlusions. Lei provided the template for powerpoint slides, Steve provided important suggestions and revised for agenda and next step.
+#### Steve worked on R Code for merging the data, Fig 2 median ABV by state, Fig 3 median IBU by state and major part of writing on Introduction, Comments, and Conclusion. And suggested that host/partner events and promotions to collect our own data Analyze population trends and review brewery/alcohol laws. Steve also initiated sitting up the Rstudio project to Github. 
+#### We worked together on boxplot for ABV summary, drawing conlusions. Lei provided the template for powerpoint slides, Steve provided important suggestions and revised for agenda and next step.
 
