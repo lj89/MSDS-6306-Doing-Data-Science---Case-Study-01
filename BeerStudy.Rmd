@@ -150,16 +150,22 @@ kable(allBeerDataDF[which.max(allBeerDataDF$BitternessUnits),],format="html",
 ####The summary function was used with kable to display summary statistics for ABV. The data was transposed to display in a horizontal format. Then a boxplot is displayed which coincides with the ABV summary statistics. The mean and median are fairly close to each other with the mean ~ 6%.
 ```{r echo=TRUE}
 # Below are the summary statistics for the Achohol By Volume (ABV)
-kable(t(summary(allBeerDataDF$AlcoholByVolume)),format="html",                                          # used transpose function to get desired format
+kable(t(summary(allBeerDataDF$AlcoholByVolume)),format="html",                # used transpose function to get desired format
       caption="Table 6 - Summary Statistics for Alcohol By Volume (ABV)",align='c',row.names=F) %>% 
   kable_styling(bootstrap_options = "striped", full_width = F)
 
 boxplot(allBeerDataDF$AlcoholByVolume, main="Fig 4 - Alcohol By Volume Boxplot", xlab="All ABV Data", ylab="ABV",col="lightblue")
+<<<<<<< HEAD
 #text(x=1, y=.06,"mean ~ 0.06",col=4)  # add mean to box plot
 mean2<-mean(allBeerDataDF$AlcoholByVolume, trim=0, na.rm=TRUE)
 mean1<- round(mean2,digits=4)
 points(mean1, col="blue")
 text(x=1.1,mean1,"mean ~ 0.06", col="red")
+=======
+ABVmean<-round(mean(allBeerDataDF$AlcoholByVolume,trim=0,na.rm=TRUE),3)       # get mean ABV, ignore NA, round it
+points(ABVmean,col="red")                                                     # show red pt for mean ABV
+text(x=1.1, ABVmean,"mean ~ 0.06",col=4)                                      # add mean label to box plot
+>>>>>>> c6310c525b80e74150a6800a7e6de2cbb045956e
 ```
 
 ###Question 7. Is there an apparent relationship between the bitterness of the beer and its alcoholic content? Draw a scatter plot.
@@ -195,6 +201,8 @@ $$r^{2} = 0.4502$$
 #### -Analyze population trends and review brewery/alcohol laws
 
 *This additional information would provide better guidance for craft beer investments*
+
+### Lei's presentation video on youtube: https://youtu.be/oOQyaFVAUDs
 
 ## Appendix
 
