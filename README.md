@@ -21,7 +21,6 @@
 * MSDS6306CaseStudy1.Rproj - Rstudio project file
 * BeerStudy.Rmd - main program
 * BeerStudy.html - html output from the main program
-* Presentation Notes2.docx - Notes about each slide to help with the video presentation
 
 #### INPUT FILES: (Folder = ImportFiles)
 1. Beers.csv - information about 2410 craft beers
