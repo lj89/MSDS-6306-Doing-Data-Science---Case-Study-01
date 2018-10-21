@@ -178,7 +178,7 @@ $$r^{2} = 0.4502$$
 </div></center>
 
 ### CONCLUSIONS
-#### We have succesfully demonstrated the merging, munging, and analysis of craft beer and brewery data sets. The results show a positive linear correlation and it is statistically signifcant. However, we recommned the following additional steps to obtain additional information that can provide better guidance for craft beer investiments.
+#### We have succesfully demonstrated the merging, munging, and analysis of craft beer and brewery data sets. The results show a positive linear correlation and it is statistically signifcant. However, we recommned the following additional steps to obtain additional information that can provide better guidance for craft beer investments.
 #### -Review various sales data on the top craft beers
 #### -Utilize surveys to understand customer demand trends
 #### -Host/partner events and promotions to collect our own data
@@ -189,8 +189,8 @@ $$r^{2} = 0.4502$$
 
 ## Presentation Links
 
-#### Lei's presentation video on youtube: https://youtu.be/oOQyaFVAUDs
-
+#### Lei's presentation video: https://youtu.be/oOQyaFVAUDs
+#### Steve's presentation video: https://youtu.be/mxRx6X9cZ10
 
 ## Appendix
 
